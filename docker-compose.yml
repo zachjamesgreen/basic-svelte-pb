@@ -1,0 +1,30 @@
+version: '3.4'
+services:
+  pocketbase:
+    image: zachjamesgreen/blog-tut-pb-dev
+    build:
+      context: .
+      dockerfile: Dockerfile.pb
+    volumes:
+      - ./pb_data:/pb/pb_data
+    ports:
+      - '8080:8080'
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+
+  svelte:
+    image: zachjamesgreen/blog-tut-svelte-dev
+    build:
+      context: .
+      dockerfile: Dockerfile.svelte
+    volumes:
+      - ./:/home/node/app
+    ports:
+      - '4000:4000'
+      - '24678:24678'
+    links:
+      - pocketbase
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    environment:
+      PB_URL: http://host.docker.internal:8080

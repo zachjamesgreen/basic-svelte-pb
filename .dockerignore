@@ -1,0 +1,4 @@
+pb_data
+.svelte-kit
+node_modules
+tests
